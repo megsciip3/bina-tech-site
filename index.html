@@ -1,1 +1,113 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bina Tech</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden; /* جلوگیری از اسکرول */
+        }
+        .video-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        video, canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* ویدیو کل صفحه را پر می‌کند */
+            display: block;
+        }
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            text-align: center;
+            font-size: 3em;
+            font-weight: bold;
+            pointer-events: none;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7); /* خوانایی بهتر متن */
+        }
+        .buttons {
+            display: none;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        .buttons a {
+            text-decoration: none;
+            padding: 12px 25px;
+            margin: 0 12px;
+            font-size: 1.2em;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+        .buttons a:hover {
+            background-color: #0056b3;
+        }
+        canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <!-- ویدیو -->
+        <video id="myVideo" autoplay muted>
+            <source src="https://raw.githubusercontent.com/megsciip3/bina-tech-site/main/2025-10-23%2010-56-05.mp4" type="video/mp4">
+            مرورگر شما ویدیو را پشتیبانی نمی‌کند.
+        </video>
+
+        <!-- متن وسط ویدیو -->
+        <div class="overlay-text">
+            Bina Tech<br>
+            AI-Based Eye Diagnosis
+        </div>
+
+        <!-- Canvas برای فریم آخر -->
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <!-- دکمه‌ها -->
+    <div class="buttons" id="buttonsContainer">
+        <a href="https://www.example.com/page1" target="_blank">صفحه ۱</a>
+        <a href="https://www.example.com/page2" target="_blank">صفحه ۲</a>
+        <a href="https://www.example.com/page3" target="_blank">صفحه ۳</a>
+    </div>
+
+    <script>
+        const video = document.getElementById('myVideo');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const buttons = document.getElementById('buttonsContainer');
+
+        video.addEventListener('ended', () => {
+            // تنظیم سایز canvas مثل ویدیو
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // کشیدن فریم آخر روی canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            video.style.display = 'none';   // مخفی کردن ویدیو
+            canvas.style.display = 'block'; // نمایش فریم آخر
+            buttons.style.display = 'flex'; // نمایش دکمه‌ها
+        });
+    </script>
+</body>
+</html>
+
 
