@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,17 +15,14 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            overflow: hidden;
         }
         .video-container {
             position: relative;
-            width: 100vw;
-            height: 100vh;
+            width: 80%;
+            max-width: 800px;
         }
         video, canvas {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
             display: block;
         }
         .overlay-text {
@@ -35,30 +32,27 @@
             transform: translate(-50%, -50%);
             color: #fff;
             text-align: center;
-            font-size: 3em;
+            font-size: 2em;
             font-weight: bold;
             pointer-events: none;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
         }
         .buttons {
             display: none;
-            margin-top: 8px; /* دکمه‌ها بالاتر آمده‌اند */
+            margin-top: 20px;
             justify-content: center;
-            flex-wrap: wrap; /* در صفحه‌های کوچک خط بعدی می‌روند */
         }
         .buttons a {
             text-decoration: none;
-            padding: 14px 36px; /* عرض و ارتفاع بیشتر */
-            margin: 8px;
-            font-size: 1.1em;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1em;
             background-color: #007BFF;
             color: white;
-            border-radius: 10px;
-            transition: background-color 0.3s, transform 0.2s;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
         .buttons a:hover {
             background-color: #0056b3;
-            transform: scale(1.05);
         }
         canvas {
             display: none;
@@ -70,10 +64,10 @@
         <!-- ویدیو -->
         <video id="myVideo" autoplay muted>
             <source src="https://raw.githubusercontent.com/megsciip3/bina-tech-site/main/2025-10-23%2010-56-05.mp4" type="video/mp4">
-            Your browser does not support the video tag.
+            مرورگر شما ویدیو را پشتیبانی نمی‌کند.
         </video>
 
-        <!-- عنوان وسط -->
+        <!-- متن وسط ویدیو -->
         <div class="overlay-text">
             Bina Tech<br>
             AI-Based Eye Diagnosis
@@ -85,11 +79,9 @@
 
     <!-- دکمه‌ها -->
     <div class="buttons" id="buttonsContainer">
-        <a href="#">Diagnostic Tools</a>
-        <a href="#">Eye Diseases</a>
-        <a href="#">Products</a>
-        <a href="#">About Us</a>
-        <a href="#">Contact</a>
+        <a href="https://www.example.com/page1" target="_blank">صفحه ۱</a>
+        <a href="https://www.example.com/page2" target="_blank">صفحه ۲</a>
+        <a href="https://www.example.com/page3" target="_blank">صفحه ۳</a>
     </div>
 
     <script>
@@ -99,12 +91,16 @@
         const buttons = document.getElementById('buttonsContainer');
 
         video.addEventListener('ended', () => {
+            // تنظیم سایز canvas مثل ویدیو
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
+
+            // کشیدن فریم آخر روی canvas
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            video.style.display = 'none';
-            canvas.style.display = 'block';
-            buttons.style.display = 'flex';
+
+            video.style.display = 'none';   // مخفی کردن ویدیو
+            canvas.style.display = 'block'; // نمایش فریم آخر
+            buttons.style.display = 'flex'; // نمایش دکمه‌ها
         });
     </script>
 </body>
