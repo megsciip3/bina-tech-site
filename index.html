@@ -1,107 +1,134 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bina Tech</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .video-container {
-            position: relative;
-            width: 80%;
-            max-width: 800px;
-        }
-        video, canvas {
-            width: 100%;
-            display: block;
-        }
-        .overlay-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            text-align: center;
-            font-size: 2em;
-            font-weight: bold;
-            pointer-events: none;
-        }
-        .buttons {
-            display: none;
-            margin-top: 20px;
-            justify-content: center;
-        }
-        .buttons a {
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-            font-size: 1em;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .buttons a:hover {
-            background-color: #0056b3;
-        }
-        canvas {
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bina Tech</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video, canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      text-align: center;
+      font-size: 3em;
+      font-weight: bold;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+      pointer-events: none;
+    }
+
+    .buttons {
+      position: absolute;
+      bottom: 30px; /* فاصله از پایین ویدیو */
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px; /* فاصله بین دکمه‌ها */
+    }
+
+    .buttons a {
+      text-decoration: none;
+      padding: 14px 0;
+      width: 200px; /* 👈 همه دکمه‌ها دقیقاً هم‌اندازه */
+      font-size: 1.1em;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 10px;
+      text-align: center;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .buttons a:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    canvas {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .overlay-text {
+        font-size: 2em;
+      }
+      .buttons a {
+        width: 160px;
+        font-size: 1em;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="video-container">
-        <!-- ویدیو -->
-        <video id="myVideo" autoplay muted>
-            <source src="https://raw.githubusercontent.com/megsciip3/bina-tech-site/main/2025-10-23%2010-56-05.mp4" type="video/mp4">
-            مرورگر شما ویدیو را پشتیبانی نمی‌کند.
-        </video>
+  <div class="video-container">
+    <!-- ویدیو -->
+    <video id="myVideo" autoplay muted>
+      <source src="https://raw.githubusercontent.com/megsciip3/bina-tech-site/main/2025-10-23%2010-56-05.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
 
-        <!-- متن وسط ویدیو -->
-        <div class="overlay-text">
-            Bina Tech<br>
-            AI-Based Eye Diagnosis
-        </div>
-
-        <!-- Canvas برای فریم آخر -->
-        <canvas id="canvas"></canvas>
+    <!-- عنوان -->
+    <div class="overlay-text">
+      Bina Tech<br>
+      AI-Based Eye Diagnosis
     </div>
 
-    <!-- دکمه‌ها -->
+    <!-- Canvas برای فریم آخر -->
+    <canvas id="canvas"></canvas>
+
+    <!-- دکمه‌ها زیر ویدیو -->
     <div class="buttons" id="buttonsContainer">
-        <a href="https://www.example.com/page1" target="_blank">صفحه ۱</a>
-        <a href="https://www.example.com/page2" target="_blank">صفحه ۲</a>
-        <a href="https://www.example.com/page3" target="_blank">صفحه ۳</a>
+      <a href="#">Diagnostic Tools</a>
+      <a href="#">Eye Diseases</a>
+      <a href="#">Products</a>
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
     </div>
+  </div>
 
-    <script>
-        const video = document.getElementById('myVideo');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const buttons = document.getElementById('buttonsContainer');
+  <script>
+    const video = document.getElementById('myVideo');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const buttons = document.getElementById('buttonsContainer');
 
-        video.addEventListener('ended', () => {
-            // تنظیم سایز canvas مثل ویدیو
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            // کشیدن فریم آخر روی canvas
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            video.style.display = 'none';   // مخفی کردن ویدیو
-            canvas.style.display = 'block'; // نمایش فریم آخر
-            buttons.style.display = 'flex'; // نمایش دکمه‌ها
-        });
-    </script>
+    video.addEventListener('ended', () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      video.style.display = 'none';
+      canvas.style.display = 'block';
+      buttons.style.display = 'flex';
+    });
+  </script>
 </body>
 </html>
