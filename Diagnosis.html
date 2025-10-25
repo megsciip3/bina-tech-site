@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnosis</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center">
+
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+    <h1 class="text-2xl font-bold mb-6 text-gray-700">آپلود تصویر چشم</h1>
+    
+    <form id="uploadForm" class="flex flex-col items-center gap-4">
+      <input type="file" name="image" accept="image/*" required
+             class="border-2 border-gray-300 rounded-lg p-2 w-full"/>
+      <button type="submit"
+              class="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-2 px-4 rounded-lg hover:scale-105 transition-transform">
+        ارسال برای تحلیل
+      </button>
+    </form>
+
+    <div id="result" class="mt-6 text-gray-800 font-medium"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const resultDiv = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      resultDiv.innerText = "در حال پردازش...";
+
+      const formData = new FormData(form);
+      try {
+        const response = await fetch("/upload", {
+          method: "POST",
+          body: formData
+        });
+        const data = await response.json();
+        if(data.result){
+          resultDiv.innerText = "نتیجه CNN: " + data.result;
+        } else {
+          resultDiv.innerText = "خطا: " + (data.error || "نامشخص");
+        }
+      } catch(err){
+        resultDiv.innerText = "خطا در اتصال به سرور.";
+        console.error(err);
+      }
+    });
+  </script>
+
+</body>
+</html>
