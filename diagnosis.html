@@ -6,70 +6,22 @@
   <title>Diagnosis - Bina Tech</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center">
+<body class="bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 min-h-screen flex flex-col items-center justify-center">
 
-  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
-    <h1 class="text-2xl font-bold mb-6 text-gray-700">آپلود تصویر چشم</h1>
-    
-    <form id="uploadForm" class="flex flex-col items-center gap-4">
-      <input type="file" name="image" accept="image/*" required
-             class="border-2 border-gray-300 rounded-lg p-2 w-full"/>
-      <button type="submit"
-              class="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-2 px-4 rounded-lg hover:scale-105 transition-transform">
-        ارسال برای تحلیل
-      </button>
-    </form>
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-3xl text-center">
+    <h1 class="text-3xl font-bold mb-6 text-gray-700">تشخیص بیماری چشم — Bina Tech</h1>
+    <p class="text-gray-600 mb-6">تصویر شبکیه چشم خود را آپلود کنید و نتیجه مدل را مشاهده کنید.</p>
 
-    <!-- تصویر پیش‌نمایش -->
-    <img id="preview" class="mt-4 rounded-xl shadow-lg max-w-full hidden" />
+    <!-- iframe نمایش Space Hugging Face -->
+    <iframe src="https://huggingface.co/spaces/megsciip/Bina_Tech" 
+            width="100%" 
+            height="800" 
+            frameborder="0"
+            class="rounded-xl shadow-lg">
+    </iframe>
 
-    <!-- نمایش نتیجه مدل -->
-    <div id="result" class="mt-6 text-gray-800 font-medium"></div>
+    <p class="text-gray-500 mt-4 text-sm">Bina Tech — AI Ophthalmology</p>
   </div>
-
-  <script>
-    const form = document.getElementById("uploadForm");
-    const resultDiv = document.getElementById("result");
-    const preview = document.getElementById("preview");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      resultDiv.innerText = "در حال پردازش...";
-      preview.classList.add("hidden");
-
-      const fileInput = form.querySelector('input[name="image"]');
-      if (!fileInput.files.length) {
-        alert("لطفاً یک فایل انتخاب کنید!");
-        return;
-      }
-
-      const file = fileInput.files[0];
-
-      // نمایش تصویر آپلود شده
-      preview.src = URL.createObjectURL(file);
-      preview.classList.remove("hidden");
-
-      // تبدیل تصویر به base64
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64 = reader.result.split(',')[1]; // remove data:image/...;base64
-
-        try {
-          const response = await fetch("https://huggingface.co/spaces/megsciip/Bina_Tech/api/predict", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ data: [base64] })
-          });
-          const data = await response.json();
-          resultDiv.innerHTML = `<strong>نتیجه مدل:</strong> ${data.data[0]}`;
-        } catch(err){
-          resultDiv.innerText = "خطا در اتصال به API.";
-          console.error(err);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  </script>
 
 </body>
 </html>
